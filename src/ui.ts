@@ -5,7 +5,7 @@ import { tablero } from "./model";
 let tableroBloqueado = false;
 
 export const renderizarTablero = () => {
-  const gridContainer = document.querySelector(".grid-container") as HTMLElement;
+  const gridContainer = document.querySelector(".grid-container") as HTMLDivElement;
 
   gridContainer.innerHTML = "";
 
@@ -17,9 +17,7 @@ export const renderizarTablero = () => {
 
     const card = document.createElement("div");
     card.classList.add("card");
-    if (carta.estaVuelta || carta.encontrada) {
-      card.classList.add("flipped");
-    }
+
 
     const cardBack = document.createElement("div");
     cardBack.classList.add("card-face", "card-back");
@@ -52,9 +50,12 @@ const agregarEventosACartas = () => {
       const indice = parseInt(divCard.dataset.indice!);
 
       manejarVolteoDeCarta(tablero, indice);
-
-      renderizarTablero();
-
+      var carta = tablero.cartas[indice];
+      var card = divCard.querySelector(".card") as HTMLDivElement;
+      if (carta.estaVuelta || carta.encontrada) {
+        card.classList.add("flipped");
+      }
+      
       if (tablero.estadoPartida === "DosCartasLevantadas") {
         const indiceA = tablero.indiceCartaVolteadaA!;
         const indiceB = tablero.indiceCartaVolteadaB!;
