@@ -65,9 +65,6 @@ const crearCartaInicial = (idFoto: number, imagen: string): Carta => ({
 });
 
 const crearColeccionDeCartasInicial = (infoCartas: InfoCarta[]): Carta[] => {
-    /* Aquí crearemos un array de cartas a partir de un array de infoCartas
-       y duplicaremos las cartas para que haya dos de cada tipo.
-    */
     const cartas: Carta[] = [];
     infoCartas.forEach((infoCarta) => {
         cartas.push(crearCartaInicial(infoCarta.idFoto, infoCarta.imagen));

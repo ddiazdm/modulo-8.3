@@ -1,4 +1,4 @@
-import { barajarCartas, voltearLaCarta, sonPareja, parejaEncontrada } from "./motor";
+import { barajarCartas, voltearLaCarta, sonPareja, parejaEncontrada, esPartidaCompleta } from "./motor";
 import { Carta, Tablero } from "./model";
 
 describe("barajarCartas", () => {
@@ -153,4 +153,41 @@ describe('parejaEncontrada', () => {
   });
 });
 
+describe('esPartidaCompleta', () => {
+  it('debería devolver true si todas las cartas han sido encontradas', () => {
+    const cartas: Carta[] = [
+      { idFoto: 1, imagen: "url1", estaVuelta: true, encontrada: true },
+      { idFoto: 1, imagen: "url2", estaVuelta: true, encontrada: true },
+      { idFoto: 2, imagen: "url3", estaVuelta: true, encontrada: true },
+      { idFoto: 2, imagen: "url4", estaVuelta: true, encontrada: true },
+      { idFoto: 3, imagen: "url5", estaVuelta: true, encontrada: true },
+      { idFoto: 3, imagen: "url6", estaVuelta: true, encontrada: true }
+    ];
+
+    const tablero: Tablero = {
+      cartas,
+      estadoPartida: "PartidaCompleta"
+    };
+
+    expect(esPartidaCompleta(tablero)).toBe(true);
+  });
+
+  it('debería devolver false si no todas las cartas han sido encontradas', () => {
+    const cartas: Carta[] = [
+      { idFoto: 1, imagen: "url1", estaVuelta: true, encontrada: true },
+      { idFoto: 1, imagen: "url2", estaVuelta: true, encontrada: true },
+      { idFoto: 2, imagen: "url3", estaVuelta: true, encontrada: true },
+      { idFoto: 2, imagen: "url4", estaVuelta: true, encontrada: true },
+      { idFoto: 3, imagen: "url5", estaVuelta: true, encontrada: false },
+      { idFoto: 3, imagen: "url6", estaVuelta: true, encontrada: false }
+    ];
+
+    const tablero: Tablero = {
+      cartas,
+      estadoPartida: "DosCartasLevantadas"
+    };
+
+    expect(esPartidaCompleta(tablero)).toBe(false);
+  });
+});
 

@@ -1,9 +1,13 @@
 
+import {  renderizarTablero} from './ui';
+import { tablero } from "./model";
+import { iniciaPartida} from './motor';
 
-const cards = document.querySelectorAll(".card"); 
 
-cards.forEach((card) => {
-  card.addEventListener("click", () => {
-    card.classList.toggle("flipped"); 
-  });
+
+const startButton = document.getElementById("start") as HTMLButtonElement;
+
+startButton.addEventListener("click", () => {
+  iniciaPartida(tablero);
+  renderizarTablero();
 });
