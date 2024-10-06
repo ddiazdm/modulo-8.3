@@ -33,9 +33,7 @@ export const voltearLaCarta = (tablero: Tablero, indice: number): void => {
   }
 };
 
-/*
-  Dos cartas son pareja si en el array de tablero de cada una tienen el mismo id
-*/
+
 export const sonPareja = (
   indiceA: number,
   indiceB: number,
@@ -44,9 +42,7 @@ export const sonPareja = (
   return tablero.cartas[indiceA].idFoto === tablero.cartas[indiceB].idFoto;
 };
 
-/*
-  Aquí asumimos ya que son pareja, lo que hacemos es marcarlas como encontradas y comprobar si la partida esta completa.
-*/
+
 export const parejaEncontrada = (
   tablero: Tablero,
   indiceA: number,
@@ -54,12 +50,11 @@ export const parejaEncontrada = (
 ): void => {
   tablero.cartas[indiceA].encontrada = true;
   tablero.cartas[indiceB].encontrada = true;
-
-  if (tablero.cartas.every((carta) => carta.encontrada)) {
-    tablero.estadoPartida = "PartidaCompleta";
-  } else {
-    tablero.estadoPartida = "CeroCartasLevantadas";
-  }
+  tablero.estadoPartida = "CeroCartasLevantadas";
+  tablero.indiceCartaVolteadaA = undefined;
+  tablero.indiceCartaVolteadaB = undefined;
+  
+  tablero.intentos += 1;
 };
 
 export const parejaNoEncontrada = (
@@ -72,11 +67,11 @@ export const parejaNoEncontrada = (
   tablero.estadoPartida = "CeroCartasLevantadas";
   tablero.indiceCartaVolteadaA = undefined;
   tablero.indiceCartaVolteadaB = undefined;
+
+  tablero.intentos += 1;
 };
 
-/*
-  Esto lo podemos comprobar o bien utilizando every, o bien utilizando un contador (cartasEncontradas)
-*/
+
 export const esPartidaCompleta = (tablero: Tablero): boolean => {
   return tablero.cartas.every((carta) => carta.encontrada);
 };
@@ -95,9 +90,6 @@ export const manejarVolteoDeCarta = (tablero: Tablero, indice: number): void => 
   }
 };
 
-/*
-Iniciar partida
-*/
 
 export const iniciaPartida = (tablero: Tablero): void => {
   tablero.cartas = barajarCartas(tablero.cartas);

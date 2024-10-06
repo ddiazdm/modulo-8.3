@@ -51,6 +51,7 @@ const agregarEventosACartas = () => {
 
       if (sePuedeVoltearLaCarta(tablero, indice)) {
         voltearCarta(indice);
+        actualizarintentosUI();
 
         if (tablero.estadoPartida === "DosCartasLevantadas") {
           tableroBloqueado = true;
@@ -72,6 +73,8 @@ const evaluarPareja = () => {
 
   if (sonPareja(indiceA, indiceB, tablero)) {
     parejaEncontrada(tablero, indiceA, indiceB);
+    actualizarintentosUI(); 
+
   } else {
     parejaNoEncontrada(tablero, indiceA, indiceB);
   }
@@ -91,3 +94,14 @@ const actualizarVistaCartas = () => {
     }
   });
 };
+
+const actualizarintentosUI = () => {
+  const intentosElement = document.getElementById("intentos");
+  if (intentosElement) {
+    intentosElement.textContent = `Intentos: ${tablero.intentos}`;
+  }
+};
+
+
+
+

@@ -39,6 +39,7 @@ describe("VoltearCarta", () => {
     const tablero: Tablero = {
       cartas,
       estadoPartida: "CeroCartasLevantadas",
+      intentos : 10,
     };
     const indiceCarta = 0;
 
@@ -60,6 +61,7 @@ describe("VoltearCarta", () => {
         estadoPartida: "DosCartasLevantadas",
         indiceCartaVolteadaA: 0,
         indiceCartaVolteadaB: 1,
+        intentos: 0,
       };
 
       const indiceTerceraCarta = 2;
@@ -81,6 +83,7 @@ describe("sonPareja", () => {
       estadoPartida: "DosCartasLevantadas",
       indiceCartaVolteadaA: 0,
       indiceCartaVolteadaB: 1,
+      intentos: 10,
     };
 
     expect(sonPareja(0, 1, tablero)).toBe(true);
@@ -95,6 +98,7 @@ describe("sonPareja", () => {
       estadoPartida: "DosCartasLevantadas",
       indiceCartaVolteadaA: 0,
       indiceCartaVolteadaB: 1,
+      intentos: 0,
     };
 
     expect(sonPareja(0, 1, tablero)).toBe(true);
@@ -116,7 +120,8 @@ describe('parejaEncontrada', () => {
       cartas,
       estadoPartida: "DosCartasLevantadas",
       indiceCartaVolteadaA: 0,
-      indiceCartaVolteadaB: 1
+      indiceCartaVolteadaB: 1,
+      intentos: 10,
     };
 
     parejaEncontrada(tablero, 0, 1);
@@ -141,7 +146,8 @@ describe('parejaEncontrada', () => {
       cartas,
       estadoPartida: "DosCartasLevantadas",
       indiceCartaVolteadaA: 4,
-      indiceCartaVolteadaB: 5
+      indiceCartaVolteadaB: 5,
+      intentos: 10
     };
 
     parejaEncontrada(tablero, 4, 5);
@@ -166,7 +172,8 @@ describe('esPartidaCompleta', () => {
 
     const tablero: Tablero = {
       cartas,
-      estadoPartida: "PartidaCompleta"
+      estadoPartida: "PartidaCompleta",
+      intentos: 60,
     };
 
     expect(esPartidaCompleta(tablero)).toBe(true);
@@ -184,7 +191,8 @@ describe('esPartidaCompleta', () => {
 
     const tablero: Tablero = {
       cartas,
-      estadoPartida: "DosCartasLevantadas"
+      estadoPartida: "DosCartasLevantadas",
+      intentos: 60
     };
 
     expect(esPartidaCompleta(tablero)).toBe(false);

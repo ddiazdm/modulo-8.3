@@ -22,6 +22,7 @@ export interface Tablero {
   estadoPartida: EstadoPartida;
   indiceCartaVolteadaA?: number;
   indiceCartaVolteadaB?: number;
+  intentos: number;
 }
 
 export const arrayCartas: InfoCarta[] = [
@@ -75,12 +76,11 @@ const crearColeccionDeCartasInicial = (infoCartas: InfoCarta[]): Carta[] => {
 
   export let cartas: Carta[] = crearColeccionDeCartasInicial(arrayCartas);
 
-
-
 const crearTableroInicial = (): Tablero => ({
-    cartas: cartas,
+    cartas: crearColeccionDeCartasInicial(arrayCartas),
     estadoPartida: "PartidaNoIniciada",
-  });
+    intentos: 0
+});
   
   export let tablero: Tablero = crearTableroInicial();
 
