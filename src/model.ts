@@ -72,7 +72,8 @@ const crearColeccionDeCartasInicial = (infoCartas: InfoCarta[]): Carta[] => {
     });
     return cartas;
   };
-export let cartas: Carta[] = crearColeccionDeCartasInicial(arrayCartas);
+
+  export let cartas: Carta[] = crearColeccionDeCartasInicial(arrayCartas);
 
 
 

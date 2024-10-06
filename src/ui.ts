@@ -49,40 +49,50 @@ const agregarEventosACartas = () => {
 
       const indice = parseInt(divCard.dataset.indice!);
 
-      manejarVolteoDeCarta(tablero, indice);
-      var carta = tablero.cartas[indice];
-      var card = divCard.querySelector(".card") as HTMLDivElement;
-      if (carta.estaVuelta || carta.encontrada) {
-        card.classList.add("flipped");
-      }
-      
+      // Evitar voltear cartas ya encontradas o volteadas
+      if (tablero.cartas[indice].encontrada || tablero.cartas[indice].estaVuelta) return;
+
+      voltearCarta(indice);
+
       if (tablero.estadoPartida === "DosCartasLevantadas") {
-        const indiceA = tablero.indiceCartaVolteadaA!;
-        const indiceB = tablero.indiceCartaVolteadaB!;
-
-        if (sonPareja(indiceA, indiceB, tablero)) {
-          parejaEncontrada(tablero, indiceA, indiceB);
-
-          renderizarTablero();
-    
-        } else {
-
-          tableroBloqueado = true;
-
-          setTimeout(() => {
-            tablero.cartas[indiceA].estaVuelta = false;
-            tablero.cartas[indiceB].estaVuelta = false;
-
-            tablero.indiceCartaVolteadaA = undefined;
-            tablero.indiceCartaVolteadaB = undefined;
-            tablero.estadoPartida = "CeroCartasLevantadas";
-
-            tableroBloqueado = false;
-
-            renderizarTablero();
-          }, 1000); 
-        }
+        tableroBloqueado = true;
+        setTimeout(evaluarPareja, 1000);
       }
     });
+  });
+};
+
+const voltearCarta = (indice: number) => {
+  manejarVolteoDeCarta(tablero, indice);
+  actualizarVistaCartas();
+};
+
+const evaluarPareja = () => {
+  const indiceA = tablero.indiceCartaVolteadaA!;
+  const indiceB = tablero.indiceCartaVolteadaB!;
+
+  if (sonPareja(indiceA, indiceB, tablero)) {
+    parejaEncontrada(tablero, indiceA, indiceB);
+  } else {
+    tablero.cartas[indiceA].estaVuelta = false;
+    tablero.cartas[indiceB].estaVuelta = false;
+    tablero.indiceCartaVolteadaA = undefined;
+    tablero.indiceCartaVolteadaB = undefined;
+    tablero.estadoPartida = "CeroCartasLevantadas";
+  }
+
+  actualizarVistaCartas();
+  tableroBloqueado = false;
+};
+
+const actualizarVistaCartas = () => {
+  const cardContainers = document.querySelectorAll(".card-container");
+  cardContainers.forEach((cardContainer, index) => {
+    const card = cardContainer.querySelector(".card") as HTMLDivElement;
+    if (tablero.cartas[index].estaVuelta || tablero.cartas[index].encontrada) {
+      card.classList.add("flipped");
+    } else {
+      card.classList.remove("flipped");
+    }
   });
 };

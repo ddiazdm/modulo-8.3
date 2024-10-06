@@ -8,10 +8,10 @@ export const barajarCartas = (cartas: Carta[]): Carta[] => {
   return cartas;
 };
 
-const sePuedeVoltearLaCarta = (tablero: Tablero, indice: number): boolean => {
-  const carta = tablero.cartas[indice];
-  return !carta.estaVuelta && tablero.estadoPartida !== "DosCartasLevantadas";
-};
+// const sePuedeVoltearLaCarta = (tablero: Tablero, indice: number): boolean => {
+//   const carta = tablero.cartas[indice];
+//   return !carta.estaVuelta && tablero.estadoPartida !== "DosCartasLevantadas";
+// };
 
 export const voltearLaCarta = (tablero: Tablero, indice: number): void => {
   tablero.cartas[indice].estaVuelta = true;
@@ -65,17 +65,16 @@ export const parejaEncontrada = (
 /*
   Aquí asumimos que no son pareja y las volvemos a poner boca abajo
 */
-const parejaNoEncontrada = (
-  tablero: Tablero,
-  indiceA: number,
-  indiceB: number
-): void => {
-  if (!sonPareja(indiceA, indiceB, tablero)) {
-    tablero.cartas[indiceA].estaVuelta = false;
-    tablero.cartas[indiceB].estaVuelta = false;
-    tablero.estadoPartida = "CeroCartasLevantadas";
-  }
-};
+// const parejaNoEncontrada = (
+//   tablero: Tablero,
+//   indiceA: number,
+//   indiceB: number
+// ): void => {
+//   if (!sonPareja(indiceA, indiceB, tablero)) {
+//     tablero.cartas[indiceA].estaVuelta = false;
+//     tablero.cartas[indiceB].estaVuelta = false;
+//   }
+// };
 
 /*
   Esto lo podemos comprobar o bien utilizando every, o bien utilizando un contador (cartasEncontradas)
@@ -84,33 +83,19 @@ export const esPartidaCompleta = (tablero: Tablero): boolean => {
   return tablero.cartas.every((carta) => carta.encontrada);
 };
 
-export const manejarVolteoDeCarta = (
-  tablero: Tablero,
-  indice: number
-): void => {
-  if (!sePuedeVoltearLaCarta(tablero, indice)) {
-    return;
+export const manejarVolteoDeCarta = (tablero: Tablero, indice: number): void => {
+  if (tablero.cartas[indice].encontrada || tablero.cartas[indice].estaVuelta) return;
+
+  tablero.cartas[indice].estaVuelta = true;
+
+  if (tablero.estadoPartida === "CeroCartasLevantadas") {
+    tablero.estadoPartida = "UnaCartaLevantada";
+    tablero.indiceCartaVolteadaA = indice;
+  } else if (tablero.estadoPartida === "UnaCartaLevantada") {
+    tablero.estadoPartida = "DosCartasLevantadas";
+    tablero.indiceCartaVolteadaB = indice;
   }
-
-  voltearLaCarta(tablero, indice);
-
-  if (tablero.estadoPartida === "DosCartasLevantadas") {
-    const indiceA = tablero.indiceCartaVolteadaA!;
-    const indiceB = tablero.indiceCartaVolteadaB!;
-
-    if (sonPareja(indiceA, indiceB, tablero)) {
-      parejaEncontrada(tablero, indiceA, indiceB);
-      tablero.indiceCartaVolteadaA = undefined;
-      tablero.indiceCartaVolteadaB = undefined;
-      tablero.estadoPartida = "CeroCartasLevantadas";
-    } else {
-      parejaNoEncontrada(tablero, indiceA, indiceB);
-      tablero.indiceCartaVolteadaA = undefined;
-      tablero.indiceCartaVolteadaB = undefined;
-    }
-  }
-}
-
+};
 
 /*
 Iniciar partida
