@@ -8,10 +8,10 @@ export const barajarCartas = (cartas: Carta[]): Carta[] => {
   return cartas;
 };
 
-// const sePuedeVoltearLaCarta = (tablero: Tablero, indice: number): boolean => {
-//   const carta = tablero.cartas[indice];
-//   return !carta.estaVuelta && tablero.estadoPartida !== "DosCartasLevantadas";
-// };
+export const sePuedeVoltearLaCarta = (tablero: Tablero, indice: number): boolean => {
+  const carta = tablero.cartas[indice];
+  return !carta.estaVuelta && !carta.encontrada && tablero.estadoPartida !== "DosCartasLevantadas";
+};
 
 export const voltearLaCarta = (tablero: Tablero, indice: number): void => {
   tablero.cartas[indice].estaVuelta = true;
@@ -62,19 +62,17 @@ export const parejaEncontrada = (
   }
 };
 
-/*
-  Aquí asumimos que no son pareja y las volvemos a poner boca abajo
-*/
-// const parejaNoEncontrada = (
-//   tablero: Tablero,
-//   indiceA: number,
-//   indiceB: number
-// ): void => {
-//   if (!sonPareja(indiceA, indiceB, tablero)) {
-//     tablero.cartas[indiceA].estaVuelta = false;
-//     tablero.cartas[indiceB].estaVuelta = false;
-//   }
-// };
+export const parejaNoEncontrada = (
+  tablero: Tablero,
+  indiceA: number,
+  indiceB: number
+): void => {
+  tablero.cartas[indiceA].estaVuelta = false;
+  tablero.cartas[indiceB].estaVuelta = false;
+  tablero.estadoPartida = "CeroCartasLevantadas";
+  tablero.indiceCartaVolteadaA = undefined;
+  tablero.indiceCartaVolteadaB = undefined;
+};
 
 /*
   Esto lo podemos comprobar o bien utilizando every, o bien utilizando un contador (cartasEncontradas)

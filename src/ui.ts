@@ -1,5 +1,5 @@
 // ui.ts
-import { manejarVolteoDeCarta, sonPareja, parejaEncontrada } from "./motor";
+import { manejarVolteoDeCarta, sonPareja, parejaEncontrada, sePuedeVoltearLaCarta, parejaNoEncontrada } from "./motor";
 import { tablero } from "./model";
 
 let tableroBloqueado = false;
@@ -49,14 +49,13 @@ const agregarEventosACartas = () => {
 
       const indice = parseInt(divCard.dataset.indice!);
 
-      // Evitar voltear cartas ya encontradas o volteadas
-      if (tablero.cartas[indice].encontrada || tablero.cartas[indice].estaVuelta) return;
+      if (sePuedeVoltearLaCarta(tablero, indice)) {
+        voltearCarta(indice);
 
-      voltearCarta(indice);
-
-      if (tablero.estadoPartida === "DosCartasLevantadas") {
-        tableroBloqueado = true;
-        setTimeout(evaluarPareja, 1000);
+        if (tablero.estadoPartida === "DosCartasLevantadas") {
+          tableroBloqueado = true;
+          setTimeout(evaluarPareja, 1000);
+        }
       }
     });
   });
@@ -74,11 +73,7 @@ const evaluarPareja = () => {
   if (sonPareja(indiceA, indiceB, tablero)) {
     parejaEncontrada(tablero, indiceA, indiceB);
   } else {
-    tablero.cartas[indiceA].estaVuelta = false;
-    tablero.cartas[indiceB].estaVuelta = false;
-    tablero.indiceCartaVolteadaA = undefined;
-    tablero.indiceCartaVolteadaB = undefined;
-    tablero.estadoPartida = "CeroCartasLevantadas";
+    parejaNoEncontrada(tablero, indiceA, indiceB);
   }
 
   actualizarVistaCartas();
